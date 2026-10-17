@@ -1608,6 +1608,22 @@ li.select2-results__option[role=group] > strong:hover {
 		grid-template-areas: "pattern-area" "." "track-area" "settings-area";
 		grid-row-gap: 0;
 	}
+	.beepboxEditor input[type=range] {
+		height: 44px;
+	}
+	.beepboxEditor input[type=range]::-webkit-slider-thumb {
+		width: 12px;
+		height: 34px;
+		margin-top: -14px;
+	}
+	.beepboxEditor input[type=range]::-moz-range-thumb {
+		width: 12px;
+		height: 34px;
+	}
+	.beepboxEditor input[type=range]::-ms-thumb {
+		width: 12px;
+		height: 34px;
+	}
 	.beepboxEditor .settings-area {
 		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 		grid-template-rows: min-content min-content 1fr min-content;
@@ -1623,7 +1639,7 @@ li.select2-results__option[role=group] > strong:hover {
 		outline: none;
 	}
 	.beepboxEditor .pattern-area {
-		max-height: 75vh;
+		max-height: 80vh;
 	}
 	.beepboxEditor .trackAndMuteContainer {
 		overflow-x: auto;
