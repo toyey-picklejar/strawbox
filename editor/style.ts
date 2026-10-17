@@ -21,13 +21,19 @@ document.head.appendChild(HTML.style({ type: "text/css" }, `
 @keyframes strawbox-checkerboard-slide {
 	to { background-position: 40px 0; }
 }
-html.strawbox-checkerboard {
+html.strawbox-checkerboard::before {
+	content: "";
+	position: fixed;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+	opacity: 0.12;
 	background-image: conic-gradient(color-mix(in srgb, var(--page-margin) 94%, var(--primary-text)) 25%, transparent 0 50%, color-mix(in srgb, var(--page-margin) 94%, var(--primary-text)) 0 75%, transparent 0);
 	background-size: 40px 40px;
 	animation: strawbox-checkerboard-slide 18s linear infinite;
 }
 @media (prefers-reduced-motion: reduce) {
-	html.strawbox-checkerboard { animation: none; }
+	html.strawbox-checkerboard::before { animation: none; }
 }
 :root {
 	--button-size: 26px;
