@@ -18,6 +18,17 @@ document.body.removeChild(scrollBarTest);
 document.head.appendChild(HTML.style({ type: "text/css" }, `
 
 /* Note: "#" symbols need to be encoded as "%23" in SVG data urls, otherwise they are interpreted as fragment identifiers! */
+@keyframes strawbox-checkerboard-slide {
+	to { background-position: 40px 0; }
+}
+html.strawbox-checkerboard {
+	background-image: conic-gradient(color-mix(in srgb, var(--page-margin) 94%, var(--primary-text)) 25%, transparent 0 50%, color-mix(in srgb, var(--page-margin) 94%, var(--primary-text)) 0 75%, transparent 0);
+	background-size: 40px 40px;
+	animation: strawbox-checkerboard-slide 18s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+	html.strawbox-checkerboard { animation: none; }
+}
 :root {
 	--button-size: 26px;
 	--settings-area-width: 192px;

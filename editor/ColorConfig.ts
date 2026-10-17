@@ -3380,6 +3380,10 @@ export class ColorConfig {
 
     private static readonly _styleElement: HTMLStyleElement = document.head.appendChild(HTML.style({ type: "text/css" }));
 
+		public static setCheckerboard(enabled: boolean): void {
+		document.documentElement.classList.toggle("strawbox-checkerboard", enabled);
+	}
+
     public static setTheme(name: string): void {
 		let theme: string = this.themes[name];
 		if (theme == undefined) theme = this.themes["jummbox classic"];

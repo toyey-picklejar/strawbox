@@ -19,6 +19,7 @@ export class Preferences {
 	public instrumentCopyPaste: boolean;
 	public enableChannelMuting: boolean;
 	public colorTheme: string;
+	public animatedCheckerboard: boolean;
 	public layout: string;
 	public displayBrowserUrl: boolean;
 	public volume: number = 75;
@@ -62,6 +63,7 @@ export class Preferences {
 		this.bassOffset = (+(<any>window.localStorage.getItem("bassOffset"))) || 0;
 		this.layout = window.localStorage.getItem("layout") || "small";
 		this.colorTheme = window.localStorage.getItem("colorTheme") || "jummbox classic";
+		this.animatedCheckerboard = window.localStorage.getItem("animatedCheckerboard") != "false";
 		this.visibleOctaves = ((<any>window.localStorage.getItem("visibleOctaves")) >>> 0) || Preferences.defaultVisibleOctaves;
 		
 		const defaultScale: Scale | undefined = Config.scales.dictionary[window.localStorage.getItem("defaultScale")!];
@@ -103,6 +105,7 @@ export class Preferences {
 		window.localStorage.setItem("bassOffset", String(this.bassOffset));
 		window.localStorage.setItem("layout", this.layout);
 		window.localStorage.setItem("colorTheme", this.colorTheme);
+		window.localStorage.setItem("animatedCheckerboard", this.animatedCheckerboard ? "true" : "false");
 		window.localStorage.setItem("volume", String(this.volume));
 		window.localStorage.setItem("visibleOctaves", String(this.visibleOctaves));
 	}

@@ -872,6 +872,7 @@ export class SongEditor {
 
     constructor(private _doc: SongDocument) {
 
+        ColorConfig.setCheckerboard(this._doc.prefs.animatedCheckerboard);
         this._doc.notifier.watch(this.whenUpdated);
         this._doc.modRecordingHandler = () => { this.handleModRecording() };
         new MidiInputHandler(this._doc);

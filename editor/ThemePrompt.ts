@@ -6,7 +6,7 @@ import { SongDocument } from "./SongDocument";
 import { ColorConfig } from "./ColorConfig";
 
 //namespace beepbox {
-const { button, div, h2, select, option } = HTML;
+const { button, div, h2, select, option, label, input } = HTML;
 
 export class ThemePrompt implements Prompt {
 	private readonly _themeSelect: HTMLSelectElement = select({ style: "width: 100%;" },
@@ -36,6 +36,7 @@ export class ThemePrompt implements Prompt {
 		option({ value: "poly" }, "Poly"),
 		option({ value: "blutonium" }, "Blutonium"),
 	);
+	private readonly _checkerboardInput: HTMLInputElement = input({ type: "checkbox" });
 	private readonly _cancelButton: HTMLButtonElement = button({ class: "cancelButton" });
 	private readonly _okayButton: HTMLButtonElement = button({ class: "okayButton", style: "width:45%;" }, "Okay");
 
@@ -44,21 +45,29 @@ export class ThemePrompt implements Prompt {
 		div({ style: "display: flex; flex-direction: row; align-items: center; height: 2em; justify-content: flex-end;" },
 			div({ class: "selectContainer", style: "width: 100%;" }, this._themeSelect),
 		),
+		label({ style: "display: flex; align-items: center; gap: 0.5em; min-height: 2.5em; cursor: pointer;" },
+			this._checkerboardInput,
+			"Sliding checkerboard",
+		),
 		div({ style: "display: flex; flex-direction: row-reverse; justify-content: space-between;" },
 			this._okayButton,
 		),
 		this._cancelButton,
 	);
 	private readonly lastTheme: string | null = window.localStorage.getItem("colorTheme")
+	private readonly lastCheckerboard: boolean;
 
 	constructor(private _doc: SongDocument) {
+		this.lastCheckerboard = this._doc.prefs.animatedCheckerboard;
 		if (this.lastTheme != null) {
 			this._themeSelect.value = this.lastTheme;
 		}
+		this._checkerboardInput.checked = this.lastCheckerboard;
 		this._okayButton.addEventListener("click", this._saveChanges);
 		this._cancelButton.addEventListener("click", this._close);
 		this.container.addEventListener("keydown", this._whenKeyPressed);
 		this._themeSelect.addEventListener("change", this._previewTheme);
+		this._checkerboardInput.addEventListener("change", this._previewCheckerboard);
 	}
 
 	private _close = (): void => {
@@ -67,6 +76,7 @@ export class ThemePrompt implements Prompt {
 		} else {
 			ColorConfig.setTheme("jummbox classic");
 		}
+		ColorConfig.setCheckerboard(this.lastCheckerboard);
 		this._doc.undo();
 	}
 
@@ -74,6 +84,7 @@ export class ThemePrompt implements Prompt {
 		this._okayButton.removeEventListener("click", this._saveChanges);
 		this._cancelButton.removeEventListener("click", this._close);
 		this.container.removeEventListener("keydown", this._whenKeyPressed);
+		this._checkerboardInput.removeEventListener("change", this._previewCheckerboard);
 	}
 
 	private _whenKeyPressed = (event: KeyboardEvent): void => {
@@ -84,6 +95,9 @@ export class ThemePrompt implements Prompt {
 
 	private _saveChanges = (): void => {
 		window.localStorage.setItem("colorTheme", this._themeSelect.value);
+		this._doc.prefs.animatedCheckerboard = this._checkerboardInput.checked;
+		window.localStorage.setItem("animatedCheckerboard", this._doc.prefs.animatedCheckerboard ? "true" : "false");
+		ColorConfig.setCheckerboard(this._doc.prefs.animatedCheckerboard);
 		this._doc.prompt = null;
 		this._doc.prefs.colorTheme = this._themeSelect.value;
 		this._doc.undo();
@@ -92,6 +106,10 @@ export class ThemePrompt implements Prompt {
 	private _previewTheme = (): void => {
 		ColorConfig.setTheme(this._themeSelect.value);
 		this._doc.notifier.changed();
+	}
+
+	private _previewCheckerboard = (): void => {
+		ColorConfig.setCheckerboard(this._checkerboardInput.checked);
 	}
 }
 //}
